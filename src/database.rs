@@ -1,3 +1,5 @@
+use crate:: incidents::{Incident, Status};
+
 #[derive(Debug, Serialize, Deserialize)]
 struct Database {
     incidents: HashMap<u32, Incident>,
