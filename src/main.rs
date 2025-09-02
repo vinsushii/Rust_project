@@ -5,45 +5,6 @@ use std::io::{self, Write, BufReader};
 use std::path::Path;
 use std::process;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-enum Status {
-    Pending,
-    InProgress,
-    Resolved,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-struct Incident {
-    id: u32,
-    datetime: String,
-    people_involved: Vec<String>,
-    description: String,
-    status: Status,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct Database {
-    incidents: HashMap<u32, Incident>,
-    last_id: u32,
-}
-
-impl Database {
-    fn new() -> Self {
-        Database {
-            incidents: HashMap::new(),
-            last_id: 0,
-        }
-    }
-
-    fn update_status(&mut self, id: u32, new_status: Status) {
-        if let Some(incident) = self.incidents.get_mut(&id) {
-            incident.status = new_status;
-            println!("Incident {} updated to {:?}", id, incident.status);
-        } else {
-            println!("Incident ID {} not found", id);
-        }
-    }
-}
 
 fn pause() {
     let mut input = String::new();
