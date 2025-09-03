@@ -1,10 +1,11 @@
-use std::collections::HashMap;
-use serde::{Serialize, Deserialize};
-use std::fs::{File, OpenOptions};
-use std::io::{self, Write, BufReader};
-use std::path::Path;
+pub(crate) mod database;
+mod incidents;
+
+use std::io::{self, Write};
 use std::process;
 
+use crate::database::Database;
+use crate::incidents::Status;
 
 fn pause() {
     let mut input = String::new();
@@ -13,7 +14,7 @@ fn pause() {
 }
 
 fn menu() {
-    let db = Database::load("incidents.json");
+    let mut db = Database::load("incidents.json");
     loop {
         println!("Incident Management System");
         println!("1. Add Incident");
@@ -24,7 +25,7 @@ fn menu() {
         print!("Enter your choice: ");
         io::stdout().flush().unwrap();
 
-        let mut choic = String::new();
+        let mut choice = String::new();
         io::stdin().read_line(&mut choice).unwrap();
         match choice.trim() {
             "1" => {
@@ -34,9 +35,6 @@ fn menu() {
                 
             }
             "3" => {
-                
-            }
-            "4" => {
                 let mut id_str = String::new();
                 let mut status_str = String::new();
 
@@ -48,7 +46,7 @@ fn menu() {
                 io::stdout().flush().unwrap();
                 io::stdin().read_line(&mut status_str).unwrap();
 
-                let id = id_str.trim().parse()::<u32>().unwrap_or(0);
+                let id= id_str.trim().parse::<u32>().unwrap_or(0);
                 let status = match status_str.trim().to_lowercase().as_str() {
                     "pending" => Status::Pending,
                     "inprogress" => Status::InProgress,
@@ -60,6 +58,16 @@ fn menu() {
                 };
                 db.update_status(id, status);
                 db.save("incidents.json");
+            }
+            "4" => {
+               let mut id_str = String::new();
+               print!("Enter Incident ID for Deletion: ");
+               io ::stdout().flush().unwrap();
+               io ::stdin().read_line(&mut id_str).unwrap();
+
+               let id = id_str.trim().parse::<u32>().unwrap_or(0);
+               db.delete_incident(id);
+               db.save("incident.json");
             }
             "5" => {
                 db.save("incidents.json");
