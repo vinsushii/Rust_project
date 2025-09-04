@@ -36,7 +36,7 @@ pub struct Database {
         }
     }
 
-  pub  fn update_status(&mut self, id: u32, new_status: Status) {
+pub fn update_status(&mut self, id: u32, new_status: Status) {
         if let Some(incident) = self.incidents.get_mut(&id) {
             incident.status = new_status;
             println!("Incident {} updated to {:?}", id, incident.status);

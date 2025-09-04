@@ -58,6 +58,7 @@ fn menu() {
                 };
                 db.update_status(id, status);
                 db.save("incidents.json");
+                pause();
             }
             "4" => {
                let mut id_str = String::new();
@@ -67,7 +68,7 @@ fn menu() {
 
                let id = id_str.trim().parse::<u32>().unwrap_or(0);
                db.delete_incident(id);
-               db.save("incident.json");
+               db.save("incidents.json");
             }
             "5" => {
                 db.save("incidents.json");
