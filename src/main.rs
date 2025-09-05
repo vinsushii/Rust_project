@@ -3,8 +3,6 @@ mod incidents;
 
 use std::io::{self, Write};
 use std::process;
-
-use crate::database::Database;
 use crate::incidents::Status;
 
 fn pause() {
@@ -14,7 +12,7 @@ fn pause() {
 }
 
 fn menu() {
-    let mut db = Database::load("incidents.json");
+    let mut db: crate::database::Database = crate::database::Database::load("incidents.json");
     loop {
         println!("Incident Management System");
         println!("1. Add Incident");
@@ -27,12 +25,56 @@ fn menu() {
 
         let mut choice = String::new();
         io::stdin().read_line(&mut choice).unwrap();
+
         match choice.trim() {
             "1" => {
+                let mut datetime = String::new();
+                let mut description = String::new();
+                let mut people = String::new();
 
+                print!("Enter datetime: ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut datetime).unwrap();
+
+                print!("Enter people involved: ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut people).unwrap();
+                let people_involved: Vec<String> = people
+                    .trim()
+                    .split(',')
+                    .map(|s| s.trim().to_string())
+                    .collect();
+
+                print!("Enter description: ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut description).unwrap();
+
+                db.add_incident(
+                    datetime.trim().to_string(),
+                    people_involved,
+                    description.trim().to_string(),
+                );
+                db.save("incidents.json");
+                pause();
             }
             "2" => {
-                
+                let incidents = db.list_incidents();
+                if incidents.is_empty() {
+                    println!("No incidents found.");
+                } else {
+                    println!("--- Incident List ---");
+                    for i in incidents {
+                        println!(
+                            "ID: {}\nDateTime: {}\nPeople: {}\nDescription: {}\nStatus: {:?}\n",
+                            i.id,
+                            i.datetime,
+                            i.people_involved.join(", "),
+                            i.description,
+                            i.status
+                        );
+                    }
+                }
+                pause();
             }
             "3" => {
                 let mut id_str = String::new();
@@ -46,13 +88,13 @@ fn menu() {
                 io::stdout().flush().unwrap();
                 io::stdin().read_line(&mut status_str).unwrap();
 
-                let id= id_str.trim().parse::<u32>().unwrap_or(0);
+                let id = id_str.trim().parse::<u32>().unwrap_or(0);
                 let status = match status_str.trim().to_lowercase().as_str() {
                     "pending" => Status::Pending,
                     "inprogress" => Status::InProgress,
                     "resolved" => Status::Resolved,
                     _ => {
-                        println!("Invalid status entered>");
+                        println!("Invalid status entered");
                         continue;
                     }
                 };
@@ -61,14 +103,15 @@ fn menu() {
                 pause();
             }
             "4" => {
-               let mut id_str = String::new();
-               print!("Enter Incident ID for Deletion: ");
-               io ::stdout().flush().unwrap();
-               io ::stdin().read_line(&mut id_str).unwrap();
+                let mut id_str = String::new();
+                print!("Enter Incident ID for Deletion: ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut id_str).unwrap();
 
-               let id = id_str.trim().parse::<u32>().unwrap_or(0);
-               db.delete_incident(id);
-               db.save("incidents.json");
+                let id = id_str.trim().parse::<u32>().unwrap_or(0);
+                db.delete_incident(id);
+                db.save("incidents.json");
+                pause();
             }
             "5" => {
                 db.save("incidents.json");
@@ -81,5 +124,5 @@ fn menu() {
 }
 
 fn main() {
-   menu();
+    menu();
 }

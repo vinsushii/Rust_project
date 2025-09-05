@@ -9,10 +9,9 @@ pub enum Status {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Incident {
-    id: u32,
-    datetime: String,
-    people_involved: Vec<String>,
-    description: String,
+    pub(crate) id: u32,
+    pub(crate) datetime: String,
+    pub(crate) people_involved: Vec<String>,
+    pub(crate) description: String,
     pub(crate) status: Status,
 }
-

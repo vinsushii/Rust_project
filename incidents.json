@@ -1,4 +1,15 @@
 {
-  "incidents": {},
-  "last_id": 0
+  "incidents": {
+    "1": {
+      "id": 1,
+      "datetime": "December 12",
+      "people_involved": [
+        "rav",
+        "charles"
+      ],
+      "description": "rat",
+      "status": "Pending"
+    }
+  },
+  "last_id": 1
 }
