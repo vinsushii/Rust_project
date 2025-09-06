@@ -10,7 +10,7 @@ rustc --version
 cargo --version
 ```
 
-<h1>Barangay Incident Report Logger Management System</h1>
+<h1>Barangay Incident Report Logger</h1>
 
 <p>A simple <strong>command-line tool</strong> written in Rust for managing incidents.<br>
 Incidents are stored in a local JSON file (<code>incidents.json</code>) so that your data <strong>persists between runs</strong>.</p>
@@ -35,7 +35,7 @@ Incidents are stored in a local JSON file (<code>incidents.json</code>) so that 
   <li>The user is shown a menu:</li>
 </ol>
 
-<pre><code>Incident Management System
+<pre><code>Barangay Incident Report Logger
 1. Add Incident
 2. View Incidents
 3. Update Incident Status
