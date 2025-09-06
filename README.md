@@ -111,18 +111,6 @@ Status: Pending
  └── database.rs   # Database struct for storing and managing incidents
 </code></pre>
 
-<hr>
-
-<h2>Future Improvements</h2>
-<ul>
-  <li>Input validation for datetime format</li>
-  <li>Search/filter incidents by keyword</li>
-  <li>Export to CSV for reports</li>
-  <li>More user-friendly CLI with colors</li>
-</ul>
-
-<hr>
-
 <p>You can also generate developer documentation using:</p>
 
 <pre><code>cargo doc --open
