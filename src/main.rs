@@ -12,9 +12,10 @@
 //! Enter your choice:
 //! ```
 
+mod products;
+use products::Product;
+use std::fs;
 use std::io::{self, Write};
-use std::process;
-use crate::incidents::Status;
 
 /// Pauses program execution until the user presses Enter.
 ///
@@ -26,126 +27,61 @@ fn pause() {
     let _ = io::stdin().read_line(&mut input);
 }
 
+fn load_products(file: &str) -> Vec<Product> {
+    let data = fs::read_to_string(file).unwrap_or_else(|_| "[]".to_string());
+    serde_json::from_str(&data).unwrap_or_else(|_| vec![])
+}
+
 fn menu() {
-    
+    let file = "products.json";
+    let mut products = load_products(file);
     loop {
-        println!("Charlie Mart Incident Management System");
-        println!("1. Add Incident");
-        println!("2. View Incidents");
-        println!("3. Update Incident Status");
-        println!("4. Delete Incident");
-        println!("5. Exit");
-        print!("Enter your choice: ");
+        println!("Charlie Fruits Mart Cashier System");
+        println!("1. View Products");
+        println!("2. Add Products");
+        println!("3. Update Product");
+        println!("4. Delete Product");
+        println!("5. Checkout / Create Invoice");
+        println!("6. Exit");
+        print!("Enter an option: ");
         io::stdout().flush().unwrap();
 
         let mut choice = String::new();
         io::stdin().read_line(&mut choice).unwrap();
+        let choice = choice.trim();
 
-        match choice.trim() {
-            // Add Incident
+        match choice {
             "1" => {
-                let mut datetime = String::new();
-                let mut description = String::new();
-                let mut people = String::new();
-
-                print!("Enter datetime: ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut datetime).unwrap();
-
-                print!("Enter people involved (comma-separated): ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut people).unwrap();
-                let people_involved: Vec<String> = people
-                    .trim()
-                    .split(',')
-                    .map(|s| s.trim().to_string())
-                    .collect();
-
-                print!("Enter description: ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut description).unwrap();
-
-                db.add_incident(
-                    datetime.trim().to_string(),
-                    people_involved,
-                    description.trim().to_string(),
-                );
-                db.save("incidents.json");
+                
                 pause();
             }
-
-            // View Incidents
             "2" => {
-                let incidents = db.list_incidents();
-                if incidents.is_empty() {
-                    println!("No incidents found.");
-                } else {
-                    println!("--- Incident List ---");
-                    for i in incidents {
-                        println!(
-                            "ID: {}\nDateTime: {}\nPeople: {}\nDescription: {}\nStatus: {:?}\n",
-                            i.id,
-                            i.datetime,
-                            i.people_involved.join(", "),
-                            i.description,
-                            i.status
-                        );
-                    }
-                }
+                
                 pause();
             }
-
-            // Update Incident Status
             "3" => {
-                let mut id_str = String::new();
-                let mut status_str = String::new();
-
-                print!("Enter Incident ID to update: ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut id_str).unwrap();
-
-                print!("Enter new status (Pending/InProgress/Resolved): ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut status_str).unwrap();
-
-                let id = id_str.trim().parse::<u32>().unwrap_or(0);
-                let status = match status_str.trim().to_lowercase().as_str() {
-                    "pending" => Status::Pending,
-                    "inprogress" => Status::InProgress,
-                    "resolved" => Status::Resolved,
-                    _ => {
-                        println!("Invalid status entered");
-                        continue;
-                    }
-                };
-                db.update_status(id, status);
-                db.save("incidents.json");
+                
                 pause();
             }
-
-            // Delete Incident
             "4" => {
-                let mut id_str = String::new();
-                print!("Enter Incident ID for Deletion: ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut id_str).unwrap();
-
-                let id = id_str.trim().parse::<u32>().unwrap_or(0);
-                db.delete_incident(id);
-                db.save("incidents.json");
+                
                 pause();
             }
-
-            // Exit Program
             "5" => {
-                db.save("incidents.json");
-                println!("Exiting...");
-                process::exit(0);
+                println!("Checking out / Creating invoice...");
+                
+                pause();
             }
-
-            // Invalid Input
-            _ => println!("Invalid choice, please try again."),
+            "6" => {
+                println!("Exiting...");
+                break;
+            }
+            _ => {
+                println!("Invalid option, please try again.");
+                pause();
+            }
         }
+        
     }
 }
 
