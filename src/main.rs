@@ -1,32 +1,16 @@
-//! # Barangay Incident Report Logger Management System
-//!
-//! This program is a simple **command-line tool** for managing incidents.
-//!
-//! ## Program Flow
-//! 1. When the program starts, it calls [`menu`].
-//! 2. [`menu`] loads existing incidents from `incidents.json` (or starts fresh if the file doesn’t exist).
-//! 3. The user is shown a menu of options:
-//!    - Add a new incident
-//!    - View all incidents
-//!    - Update an incident’s status
-//!    - Delete an incident
-//!    - Exit (saving changes)
-//! 4. Based on the user’s input, the appropriate method from [`Database`](crate::database::Database) is called.
-//! 5. All changes are saved to `incidents.json`, so data persists between runs.
+//! # Charlie Mart Cashier System
 //!
 //! ## Example Usage
 //! ```text
-//! Incident Management System
-//! 1. Add Incident
-//! 2. View Incidents
-//! 3. Update Incident Status
-//! 4. Delete Incident
-//! 5. Exit
+//! Charlie Mart Cashier System
+//! 1. View products
+//! 2. Add product
+//! 3. Update product
+//! 4. Delete product
+//! 5. Checkout / Create invoice
+//! 6. Exit
 //! Enter your choice:
 //! ```
-
-pub(crate) mod database;
-mod incidents;
 
 use std::io::{self, Write};
 use std::process;
@@ -42,20 +26,10 @@ fn pause() {
     let _ = io::stdin().read_line(&mut input);
 }
 
-/// Displays the main menu loop for the Incident Management System.
-///
-/// Handles user input and routes actions to the appropriate database functions:
-/// - **1**: Add a new incident
-/// - **2**: View all incidents
-/// - **3**: Update the status of an incident
-/// - **4**: Delete an incident
-/// - **5**: Save data and exit
 fn menu() {
-    // Load the database from the JSON file (or create new if not found)
-    let mut db: crate::database::Database = crate::database::Database::load("incidents.json");
-
+    
     loop {
-        println!("Barangay Incident Report Logger");
+        println!("Charlie Mart Incident Management System");
         println!("1. Add Incident");
         println!("2. View Incidents");
         println!("3. Update Incident Status");
