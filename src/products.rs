@@ -4,5 +4,6 @@ use serde::{Deserialize, Serialize};
 pub struct Product {
     pub(crate) id: u32,
     pub(crate) product: String,
+    pub(crate) quantity: f64.
     pub(crate) price: f64,
 }
