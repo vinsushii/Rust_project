@@ -39,6 +39,8 @@ fn save_products(file: &str, products: &Vec<Product>) {
 fn menu() {
     let file = "products.json";
     let mut products = load_products(file);
+    const  TAX_RATE: f64 = 0.12; // Constant tax rate
+
     loop {
         println!("Charlie Fruits Mart Cashier System");
         println!("1. View Products");
@@ -111,8 +113,69 @@ fn menu() {
                 pause();
             }
             "5" => {
-                println!("Checking out / Creating invoice...");
-                
+                println!("\n--- Checkout ---");
+                let mut subtotal = 0.0; // running subtotal before tax
+
+                loop {
+                    // Ask the user for product ID
+                    let mut id_str = String::new();
+                    println!("Enter product ID to add to invoice (or 'done'):");
+                    io::stdin().read_line(&mut id_str).unwrap();
+                    let id_str = id_str.trim().to_lowercase(); // clean up input
+
+                    // If user types "done", exit the loop
+                    if id_str.eq_ignore_ascii_case("done") {
+                        break;
+                    }
+
+                    // Convert product ID from string to number (default 0 if invalid)
+                    let id: u32 = id_str.parse().unwrap_or(0);
+
+                    // Try to find the product with that ID
+                    if let Some(products) = products.iter().find(|p| p.id == id) {
+                        // If product exists, ask for quantity
+                        let mut qty_str = String::new();
+                        println!("Enter quantity for {}:", products.product);
+                        io::stdin().read_line(&mut qty_str).unwrap();
+                        let qty: u32 = qty_str.trim().parse().unwrap_or(1);
+
+                        // Break product into fields (ignore id since we don’t need it)
+                        let Products { id: _, product, price } = products.clone();
+
+                        // Compute line total = price × quantity
+                        let line_total = price * qty as f64;
+                        subtotal += line_total;
+
+                        println!("Added: {} x{} = ₱{:.2}", product, qty, line_total);
+                    } else {
+                        // If no product is found
+                        println!("Product not found.");
+                    }
+                }
+
+                // After all items, compute tax and total
+                let tax = subtotal * TAX_RATE;
+                let total = subtotal + tax;
+
+                println!("-------------------------");
+                println!("SUBTOTAL:  ₱{:.2}", subtotal);
+                println!("TAX (12%): ₱{:.2}", tax);
+                println!("TOTAL:     ₱{:.2}", total);
+
+                // Ask for payment
+                let mut payment = String::new();
+                println!("Enter payment:");
+                io::stdin().read_line(&mut payment).unwrap();
+                let payment: f64 = payment.trim().parse().unwrap_or(0.0);
+
+                // Check if payment is enough
+                if payment >= total {
+                    println!("Payment successful. Change: ₱{:.2}", payment - total);
+                } else {
+                    println!("Not enough payment. Short by ₱{:.2}", total - payment);
+                }
+
+                // Pause before going back to menu
                 pause();
             }
             "6" => {
