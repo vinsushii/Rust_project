@@ -31,6 +31,10 @@ fn load_products(file: &str) -> Vec<Product> {
     let data = fs::read_to_string(file).unwrap_or_else(|_| "[]".to_string());
     serde_json::from_str(&data).unwrap_or_else(|_| vec![])
 }
+fn save_products(file: &str, products: &Vec<Product>) {
+    let data = serde_json::to_string_pretty(products).unwrap();
+    std::fs::write(file, data).unwrap();
+}
 
 fn menu() {
     let file = "products.json";
@@ -52,7 +56,17 @@ fn menu() {
 
         match choice {
             "1" => {
-                
+                if products.is_empty() {
+                    println!("No products available.");
+                } else {
+                    println!("\n--- Product List ---");
+                    for product in &products {
+                        println!(
+                            "ID: {} | Name: {} | Quantity: {} | Price: {}",
+                            product.id, product.product, product.quantity, product.price
+                        );
+                    }
+                }
                 pause();
             }
             "2" => {
@@ -64,7 +78,36 @@ fn menu() {
                 pause();
             }
             "4" => {
-                
+                if products.is_empty() {
+                    println!("No products available to delete.");
+                } else {
+                    println!("\n--- Product List ---");
+                    for product in &products {
+                        println!(
+                            "ID: {} | Name: {} | Quantity: {} | Price: {}",
+                            product.id, product.product, product.quantity, product.price
+                        );
+                    }
+
+                    print!("\nEnter the Product ID to delete: ");
+                    io::stdout().flush().unwrap();
+
+                    let mut input = String::new();
+                    io::stdin().read_line(&mut input).unwrap();
+                    let input = input.trim();
+
+                    if let Ok(id) = input.parse::<u32>() {
+                        if let Some(pos) = products.iter().position(|p| p.id == id) {
+                            let removed = products.remove(pos);
+                            save_products(file, &products);
+                            println!("Deleted product: {}", removed.product);
+                        } else {
+                            println!("No product found with ID {}", id);
+                        }
+                    } else {
+                        println!("Invalid ID input.");
+                    }
+                }
                 pause();
             }
             "5" => {
