@@ -72,11 +72,88 @@ fn menu() {
                 pause();
             }
             "2" => {
+                let mut name = String::new();
+                let mut quantity = String::new();
+                let mut price = String::new();
+                println!("\n--- Add New Product ---");
+                print!("Enter product name: ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut name).unwrap();
+                print!("Enter quantity: ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut quantity).unwrap();
+                print!("Enter price: ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut price).unwrap();
+                let id = products.last().map_or(1, |p| p.id + 1);
+                let product = Product {
+                    id,
+                    product: name.trim().to_string(),
+                    quantity: quantity.trim().parse().unwrap_or(0.0),
+                    price: price.trim().parse().unwrap_or(0.0),
+                };
+                products.push(product);
+                save_products(file, &products);
+                println!("Product added successfully.");
                 
                 pause();
             }
             "3" => {
-                
+                if products.is_empty() {
+                    println!("No products available to update.");
+                } else {
+                    println!("\n--- Product List ---");
+                    for product in &products {
+                        println!(
+                            "ID: {} | Name: {} | Quantity: {} | Price: {}",
+                            product.id, product.product, product.quantity, product.price
+                        );
+                    }
+
+                    print!("\nEnter the Product ID to update: ");
+                    io::stdout().flush().unwrap();
+
+                    let mut input = String::new();
+                    io::stdin().read_line(&mut input).unwrap();
+                    let input = input.trim();
+
+                    if let Ok(id) = input.parse::<u32>() {
+                        if let Some(product) = products.iter_mut().find(|p| p.id == id) {
+                            let mut name = String::new();
+                            let mut quantity = String::new();
+                            let mut price = String::new();
+
+                            print!("Enter new product name (current: {}): ", product.product);
+                            io::stdout().flush().unwrap();
+                            io::stdin().read_line(&mut name).unwrap();
+                            print!("Enter new quantity (current: {}): ", product.quantity);
+                            io::stdout().flush().unwrap();
+                            io::stdin().read_line(&mut quantity).unwrap();
+                            print!("Enter new price (current: {}): ", product.price);
+                            io::stdout().flush().unwrap();
+                            io::stdin().read_line(&mut price).unwrap();
+
+                            if !name.trim().is_empty() {
+                                product.product = name.trim().to_string();
+                            }
+                            if !quantity.trim().is_empty() {
+                                if let Ok(qty) = quantity.trim().parse() {
+                                    product.quantity = qty;
+                                }
+                            }
+                            if let Ok(prc) = price.trim().parse() {
+                                product.price = prc;
+                            }
+
+                            save_products(file, &products);
+                            println!("Product updated successfully.");
+                        } else {
+                            println!("No product found with ID {}", id);
+                        }
+                    } else {
+                        println!("Invalid ID input.");
+                    }
+                }
                 pause();
             }
             "4" => {
