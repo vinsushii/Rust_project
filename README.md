@@ -1,8 +1,8 @@
 # How to Setup and Download Rust Programming Language
 
 <p>Go to this website:</p>
-<a href="https://www.rust-lang.org/tools/install">Install Rust</a>
-<p>Once the file has downloaded, click the installer. It will open a command prompt for setup.</p>
+<a href="https://www.rust-lang.org/tools/install">Install Rust</a>  
+<p>Once the file has downloaded, click the installer. It will open a command prompt for setup.</p>  
 <p>To ensure Rust is installed correctly, open your command prompt and run:</p>
 
 ```bash
@@ -10,108 +10,122 @@ rustc --version
 cargo --version
 ```
 
-<h1>Barangay Incident Report Logger</h1>
+---
 
-<p>A simple <strong>command-line tool</strong> written in Rust for managing incidents.<br>
-Incidents are stored in a local JSON file (<code>incidents.json</code>) so that your data <strong>persists between runs</strong>.</p>
+# Charlie Mart Cashier System
 
-<hr>
+<p>A simple <strong>command-line application</strong> written in Rust for managing store products and invoices.<br>
+All product data is stored in a local JSON file (<code>products.json</code>) so your inventory <strong>persists between runs</strong>.</p>
 
-<h2>Features</h2>
+---
+
+## Features
 <ul>
-  <li><strong>Add Incident</strong> – Record a new incident with datetime, people involved, and a description.</li>
-  <li><strong>View Incidents</strong> – See a list of all recorded incidents with details and status.</li>
-  <li><strong>Update Incident Status</strong> – Change an incident’s status (<code>Pending</code>, <code>InProgress</code>, <code>Resolved</code>).</li>
-  <li><strong>Delete Incident</strong> – Remove an incident by ID.</li>
-  <li><strong>Persistent Storage</strong> – Data is saved to <code>incidents.json</code> and automatically reloaded.</li>
+  <li><strong>View Products</strong> – Display all available products with their stock and prices.</li>
+  <li><strong>Add Product</strong> – Add a new item with name, quantity, and price.</li>
+  <li><strong>Update Product</strong> – Edit existing product details.</li>
+  <li><strong>Delete Product</strong> – Remove an item from inventory.</li>
+  <li><strong>Checkout</strong> – Create an invoice, calculate subtotal, tax (12%), and total, then process payment.</li>
+  <li><strong>Persistent Storage</strong> – All changes are saved to <code>products.json</code>.</li>
 </ul>
 
-<hr>
+---
 
-<h2>Program Flow</h2>
+## Program Flow
 <ol>
-  <li>The program starts in <code>main.rs</code> and calls the <code>menu</code> function.</li>
-  <li>The <code>Database</code> is loaded from <code>incidents.json</code> (or created fresh if not found).</li>
-  <li>The user is shown a menu:</li>
+  <li>The program starts at <code>main.rs</code> and calls the <code>menu</code> function.</li>
+  <li>Product data is loaded from <code>products.json</code> (or created if the file doesn’t exist).</li>
+  <li>The user is presented with the menu:</li>
 </ol>
 
-<pre><code>Barangay Incident Report Logger
-1. Add Incident
-2. View Incidents
-3. Update Incident Status
-4. Delete Incident
-5. Exit
-Enter your choice:
+<pre><code>Charlie Fruits Mart Cashier System
+1. View Products
+2. Add Products
+3. Update Product
+4. Delete Product
+5. Checkout
+6. Exit
+Enter an option:
 </code></pre>
 
 <ol start="4">
-  <li>
-    Based on input:
+  <li>Depending on your choice:
     <ul>
-      <li><strong>Add</strong> → Creates a new <code>Incident</code> (default status: <code>Pending</code>)</li>
-      <li><strong>View</strong> → Lists all incidents</li>
-      <li><strong>Update</strong> → Changes an incident’s <code>Status</code></li>
-      <li><strong>Delete</strong> → Removes an incident</li>
-      <li><strong>Exit</strong> → Saves the database and terminates</li>
+      <li><strong>View</strong> → Shows the list of products.</li>
+      <li><strong>Add</strong> → Inserts a new item with ID, name, quantity, and price.</li>
+      <li><strong>Update</strong> → Lets you edit a product’s details.</li>
+      <li><strong>Delete</strong> → Removes an item from the inventory.</li>
+      <li><strong>Checkout</strong> → Generates an invoice, applies 12% tax, and updates stock levels.</li>
+      <li><strong>Exit</strong> → Saves data and closes the program.</li>
     </ul>
   </li>
-  <li>Data is saved to <code>incidents.json</code> after every operation and on exit.</li>
+  <li>All changes are written to <code>products.json</code> after every operation.</li>
 </ol>
 
-<hr>
+---
 
-<h2>Installation &amp; Running</h2>
+## Installation & Running
 
-<h3>Prerequisites</h3>
+### Prerequisites
 <p><a href="https://www.rust-lang.org/tools/install">Rust</a> (latest stable version recommended)</p>
 
-<h3>Steps</h3>
+### Steps
 <pre><code># Clone this repository
-git clone https://github.com/yourusername/incident-management-system.git
-cd incident-management-system
+git clone https://github.com/yourusername/charlie-mart-cashier.git
+cd charlie-mart-cashier
 
 # Run the program
 cargo run
 </code></pre>
 
-<hr>
+---
 
-<h2>Example Usage</h2>
+## Example Usage
 
-<pre><code>Barangay Incident Report Logger
-1. Add Incident
-2. View Incidents
-3. Update Incident Status
-4. Delete Incident
-5. Exit
-Enter your choice: 1
-Enter datetime: 2025-09-06 14:00
-Enter people involved: Alice, Bob
-Enter description: System outage in server room
-Incident 1 added successfully!
+<pre><code>Charlie Fruits Mart Cashier System
+1. View Products
+2. Add Products
+3. Update Product
+4. Delete Product
+5. Checkout
+6. Exit
+Enter an option: 2
+Enter product name: Apple
+Enter quantity: 20
+Enter price: 15
+Product added successfully!
 Press Enter to continue...
 </code></pre>
 
-<p>Viewing incidents:</p>
+<p>Checkout example:</p>
 
-<pre><code>--- Incident List ---
-ID: 1
-DateTime: 2025-09-06 14:00
-People: Alice, Bob
-Description: System outage in server room
-Status: Pending
+<pre><code>--- Checkout ---
+Enter product ID to add to invoice (or 'done'): 1
+Enter quantity for Apple: 5
+Added: Apple x5 = ₱75.00
+-------------------------
+SUBTOTAL: ₱75.00
+TAX (12%): ₱9.00
+TOTAL: ₱84.00
+Enter payment: 100
+Payment successful. Change: ₱16.00
 </code></pre>
 
-<hr>
+---
 
-<h2>Project Structure</h2>
+## Project Structure
 <pre><code>src/
  ├── main.rs       # CLI menu and program entry point
- ├── incidents.rs  # Incident struct and Status enum
- └── database.rs   # Database struct for storing and managing incidents
+ └── products.rs   # Product struct and JSON handling
+products.json      # Persistent storage for inventory
 </code></pre>
 
-<p>You can also generate developer documentation using:</p>
+---
 
-<pre><code>cargo doc --open
-</code></pre>
+### Developer Documentation
+
+<p>You can generate detailed documentation for the project with:</p>
+
+```bash
+cargo doc --open
+```
