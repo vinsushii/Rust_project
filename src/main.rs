@@ -47,7 +47,7 @@ fn menu() {
         println!("2. Add Products");
         println!("3. Update Product");
         println!("4. Delete Product");
-        println!("5. Checkout / Create Invoice");
+        println!("5. Checkout");
         println!("6. Exit");
         print!("Enter an option: ");
         io::stdout().flush().unwrap();
@@ -191,69 +191,71 @@ fn menu() {
             }
             "5" => {
                 println!("\n--- Checkout ---");
-                let mut subtotal = 0.0; // running subtotal before tax
+                let mut subtotal = 0.0;
 
                 loop {
-                    // Ask the user for product ID
-                    let mut id_str = String::new();
-                    println!("Enter product ID to add to invoice (or 'done'):");
-                    io::stdin().read_line(&mut id_str).unwrap();
-                    let id_str = id_str.trim().to_lowercase(); // clean up input
+                    print!("Enter product ID to add to invoice (or 'done'):");
+                    io::stdout().flush().unwrap();
 
-                    // If user types "done", exit the loop
+                    let mut id_str = String::new();
+                    io::stdin().read_line(&mut id_str).unwrap();
+                    let id_str = id_str.trim();
                     if id_str.eq_ignore_ascii_case("done") {
                         break;
                     }
+                
+                    let id: u32 = match id_str.parse() {
+                        Ok(v) => v,
+                        Err(_) => {
+                            println!("Invalid ID. Try again.");
+                            continue;
+                        }
+                    };
+                
+                    if let Some(prod) = products.iter_mut().find(|p| p.id == id) {
+                        print!("Enter quantity for {}:", prod.product);
+                        io::stdout().flush().unwrap();
 
-                    // Convert product ID from string to number (default 0 if invalid)
-                    let id: u32 = id_str.parse().unwrap_or(0);
-
-                    // Try to find the product with that ID
-                    if let Some(products) = products.iter().find(|p| p.id == id) {
-                        // If product exists, ask for quantity
                         let mut qty_str = String::new();
-                        println!("Enter quantity for {}:", products.product);
                         io::stdin().read_line(&mut qty_str).unwrap();
-                        let qty: u32 = qty_str.trim().parse().unwrap_or(1);
-
-                        // Break product into fields (ignore id since we don’t need it)
-                        let Products { id: _, product, price } = products.clone();
-
-                        // Compute line total = price × quantity
-                        let line_total = price * qty as f64;
+                        let qty: f64 = qty_str.trim().parse().unwrap_or(1.0);
+                    
+                        if qty > prod.quantity {
+                            println!("Not enough stock! Available: {}", prod.quantity);
+                            continue;
+                        }
+                    
+                        let line_total = prod.price * qty as f64;
                         subtotal += line_total;
-
-                        println!("Added: {} x{} = ₱{:.2}", product, qty, line_total);
+                        prod.quantity -= qty;
+                    
+                        println!("Added: {} x{} = ₱{:.2}", prod.product, qty, line_total);
                     } else {
-                        // If no product is found
                         println!("Product not found.");
                     }
                 }
 
-                // After all items, compute tax and total
                 let tax = subtotal * TAX_RATE;
                 let total = subtotal + tax;
-
                 println!("-------------------------");
                 println!("SUBTOTAL:  ₱{:.2}", subtotal);
                 println!("TAX (12%): ₱{:.2}", tax);
                 println!("TOTAL:     ₱{:.2}", total);
 
-                // Ask for payment
                 let mut payment = String::new();
-                println!("Enter payment:");
+                print!("Enter payment:");
+                io::stdout().flush().unwrap();
+
                 io::stdin().read_line(&mut payment).unwrap();
                 let payment: f64 = payment.trim().parse().unwrap_or(0.0);
 
-                // Check if payment is enough
                 if payment >= total {
                     println!("Payment successful. Change: ₱{:.2}", payment - total);
                 } else {
-                    println!("Not enough payment. Short by ₱{:.2}", total - payment);
-                }
-
-                // Pause before going back to menu
-                pause();
+                println!("Not enough payment. Short by ₱{:.2}", total - payment);
+            }
+            save_products(file, &products);
+            pause();
             }
             "6" => {
                 println!("Exiting...");

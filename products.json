@@ -1,252 +1,38 @@
 [
-    {
-      "id": 1,
-      "product": "Apple",
-      "price": 30.0
-    },
-    {
-      "id": 2,
-      "product": "Banana",
-      "price": 15.0
-    },
-    {
-      "id": 3,
-      "product": "Mango",
-      "price": 50.0
-    },
-    {
-      "id": 4,
-      "product": "Orange",
-      "price": 40.0
-    },
-    {
-        "id": 5,
-        "product": "Grapes",
-        "price": 60.0
-    },
-    {
-        "id": 6,
-        "product": "Pineapple",
-        "price": 70.0
-    },
-    {
-        "id": 7,
-        "product": "Strawberry",
-        "price": 80.0
-    },
-    {
-        "id": 8,
-        "product": "Blueberry",
-        "price": 90.0
-    },
-    {
-        "id": 9,
-        "product": "Watermelon",
-        "price": 100.0
-    },
-    {
-        "id": 10,
-        "product": "Peach",
-        "price": 110.0
-    },
-    {
-        "id": 11,
-        "product": "Cherry",
-        "price": 120.0
-    },
-    {
-        "id": 12,
-        "product": "Papaya",
-        "price": 130.0
-    },
-    {
-        "id": 13,
-        "product": "Kiwi",
-        "price": 140.0
-    },
-    {
-        "id": 14,
-        "product": "Lemon",
-        "price": 150.0
-    },
-    {
-        "id": 15,
-        "product": "Coconut",
-        "price": 160.0
-    }, 
-    {
-        "id": 16,
-        "product": "Avocado",
-        "price": 170.0
-    },
-    {
-        "id": 17,
-        "product": "Pomegranate",
-        "price": 180.0
-    },
-    {
-        "id": 18,
-        "product": "Guava",
-        "price": 190.0
-    },
-    {
-        "id": 19,
-        "product": "Fig",
-        "price": 200.0
-    },
-    {
-        "id": 20,
-        "product": "Date",
-        "price": 210.0
-    },
-    {
-        "id": 21,
-        "product": "Raspberry",
-        "price": 220.0
-    },
-    {
-        "id": 22,
-        "product": "Blackberry",
-        "price": 230.0
-    },
-    {
-        "id": 23,
-        "product": "Cranberry",
-        "price": 240.0
-    },
-    {
-        "id": 24,
-        "product": "Tangerine",
-        "price": 250.0
-    },
-    {
-        "id": 25,
-        "product": "Cantaloupe",
-        "price": 260.0
-    }, 
-    {
-        "id": 26,
-        "product": "Honeydew",
-        "price": 270.0
-    },
-    {
-        "id": 27,
-        "product": "Jackfruit",
-        "price": 280.0
-    },
-    {
-        "id": 28,
-        "product": "Durian",
-        "price": 290.0
-    },
-    {
-        "id": 29,
-        "product": "Starfruit",
-        "price": 300.0
-    },
-    {
-        "id": 30,
-        "product": "Persimmon",
-        "price": 310.0
-    },
-    {
-        "id": 31,
-        "product": "Lychee",
-        "price": 320.0
-    },
-    {
-        "id": 32,
-        "product": "Longan",
-        "price": 330.0
-    },
-    {
-        "id": 33,
-        "product": "Rambutan",
-        "price": 340.0
-    },
-    {
-        "id": 34,
-        "product": "Salak",
-        "price": 350.0
-    },
-    {
-        "id": 35,
-        "product": "Soursop",
-        "price": 360.0
-    },
-    {
-        "id": 36,
-        "product": "Clementine",
-        "price": 370.0
-    },
-    {
-        "id": 37,
-        "product": "Ugli Fruit",
-        "price": 380.0
-    },
-    {
-        "id": 38,
-        "product": "Jujube",
-        "price": 390.0
-    },
-    {
-        "id": 39,
-        "product": "Kumquat",
-        "price": 400.0
-    },
-    {
-        "id": 40,
-        "product": "Medlar",
-        "price": 410.0
-    }, 
-    {
-        "id": 41,
-        "product": "Quince",
-        "price": 420.0
-    },
-    {
-        "id": 42,
-        "product": "Medlar",
-        "price": 430.0
-    },
-    {
-        "id": 43,
-        "product": "Cloudberry",
-        "price": 440.0
-    },
-    {
-        "id": 44,
-        "product": "Boysenberry",
-        "price": 450.0
-    },
-    {
-        "id": 45,
-        "product": "Elderberry",
-        "price": 460.0
-    },
-    {
-        "id": 46,
-        "product": "Huckleberry",
-        "price": 470.0
-    },
-    {
-        "id": 47,
-        "product": "Marionberry",
-        "price": 480.0
-    },
-    {
-        "id": 48,
-        "product": "Salmonberry",
-        "price": 490.0
-    },
-    {
-        "id": 49,
-        "product": "Thimbleberry",
-        "price": 500.0
-    },
-    {
-        "id": 50,
-        "product": "Wineberry",
-        "price": 510.0
-    }
+  {
+    "id": 1,
+    "product": "Apple",
+    "quantity": 41.0,
+    "price": 25.0
+  },
+  {
+    "id": 2,
+    "product": "Banana",
+    "quantity": 100.0,
+    "price": 10.0
+  },
+  {
+    "id": 3,
+    "product": "Mango",
+    "quantity": 30.0,
+    "price": 45.0
+  },
+  {
+    "id": 4,
+    "product": "Orange",
+    "quantity": 40.0,
+    "price": 20.0
+  },
+  {
+    "id": 5,
+    "product": "Pineapple",
+    "quantity": 25.0,
+    "price": 60.0
+  },
+  {
+    "id": 6,
+    "product": "Grapes",
+    "quantity": 80.0,
+    "price": 35.0
+  }
 ]
