@@ -92,23 +92,49 @@ fn menu() {
                 pause(); // Wait for user before returning to menu
             }
             // ADD PRODUCT
-            "2" => {
-                let mut name = String::new();
-                let mut quantity = String::new();
-                let mut price = String::new();
-
+           "2" => {
                 println!("\n--- Add New Product ---");
-                print!("Enter product name: ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut name).unwrap();
 
-                print!("Enter quantity: ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut quantity).unwrap();
+                // Product Name
+                let name = loop {
+                    let mut input = String::new();
+                    print!("Enter product name: ");
+                    io::stdout().flush().unwrap();
+                    io::stdin().read_line(&mut input).unwrap();
 
-                print!("Enter price: ");
-                io::stdout().flush().unwrap();
-                io::stdin().read_line(&mut price).unwrap();
+                    let trimmed = input.trim();
+                    if !trimmed.is_empty() {
+                        break trimmed.to_string();
+                    } else {
+                        println!("Product name cannot be empty. Please try again.");
+                    }
+                };
+
+                // Quantity (must be a valid f64)
+                let quantity = loop {
+                    let mut input = String::new();
+                    print!("Enter quantity: ");
+                    io::stdout().flush().unwrap();
+                    io::stdin().read_line(&mut input).unwrap();
+
+                    match input.trim().parse::<f64>() {
+                        Ok(q) if q >= 0.0 => break q,
+                        _ => println!("Invalid quantity. Please enter a valid number."),
+                    }
+                };
+
+                // Price (must be a valid f64)
+                let price = loop {
+                    let mut input = String::new();
+                    print!("Enter price: ");
+                    io::stdout().flush().unwrap();
+                    io::stdin().read_line(&mut input).unwrap();
+
+                    match input.trim().parse::<f64>() {
+                        Ok(p) if p >= 0.0 => break p,
+                        _ => println!("Invalid price. Please enter a valid number."),
+                    }
+                };
 
                 // Generate next product ID based on last ID in list
                 let id = products.last().map_or(1, |p| p.id + 1);
@@ -116,17 +142,18 @@ fn menu() {
                 // Create new product
                 let product = Product {
                     id,
-                    product: name.trim().to_string(),
-                    quantity: quantity.trim().parse().unwrap_or(0.0),
-                    price: price.trim().parse().unwrap_or(0.0),
+                    product: name,
+                    quantity,
+                    price,
                 };
 
                 // Add to vector and save
                 products.push(product);
                 save_products(file, &products);
-                println!("Product added successfully.");
+                println!("✅ Product added successfully.");
                 pause();
             }
+
             // UPDATE PRODUCT
             "3" => {
                 if products.is_empty() {

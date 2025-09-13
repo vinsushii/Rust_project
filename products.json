@@ -1,38 +1,8 @@
 [
   {
     "id": 1,
-    "product": "Apple",
-    "quantity": 41.0,
-    "price": 25.0
-  },
-  {
-    "id": 2,
-    "product": "Banana",
-    "quantity": 100.0,
-    "price": 10.0
-  },
-  {
-    "id": 3,
-    "product": "Mango",
-    "quantity": 30.0,
-    "price": 45.0
-  },
-  {
-    "id": 4,
-    "product": "Orange",
-    "quantity": 40.0,
-    "price": 20.0
-  },
-  {
-    "id": 5,
-    "product": "Pineapple",
-    "quantity": 25.0,
-    "price": 60.0
-  },
-  {
-    "id": 6,
-    "product": "Grapes",
-    "quantity": 80.0,
-    "price": 35.0
+    "product": "",
+    "quantity": 0.0,
+    "price": 0.0
   }
 ]
