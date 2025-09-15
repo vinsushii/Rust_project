@@ -150,7 +150,7 @@ fn menu() {
                 // Add to vector and save
                 products.push(product);
                 save_products(file, &products);
-                println!("✅ Product added successfully.");
+                println!("Product added successfully.");
                 pause();
             }
 
