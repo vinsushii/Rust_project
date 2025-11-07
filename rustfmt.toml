@@ -1,0 +1,8 @@
+max_width=100
+hard_tabs = false
+tab_spaces=4
+edition="2024"
+reorder_imports=true
+reorder_modules=true
+trailing_comma="Vertical"
+newline_style="Unix"
